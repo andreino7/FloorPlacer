@@ -25,11 +25,15 @@ if ($_GET['fpga']) {
 if ($_POST['optimize']) {
     $json = $_POST['optimize'];
     $data = json_decode($json,true);
-        $y = file_get_contents("js/result.json");
+    file_put_contents("floorplanner/floorplanner/problem.json", $json);
+    $tmp = exec("python floorplanner/floorplanner/exampleProblem.py",$my_output);
+    
+    
+    $y = file_get_contents("js/result.json");
 
     echo $y;
  //   file_put_contents("aaaaa.txt", $json);
- //   $tmp = exec("python /Users/Andrea/Desktop/test.py .$json");
+  
  //   echo $tmp;
 }
 

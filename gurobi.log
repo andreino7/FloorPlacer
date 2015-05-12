@@ -1,0 +1,120 @@
+
+Gurobi 6.0.3 (mac64) logging started Tue May 12 22:43:46 2015
+
+Optimize a model with 3349 rows, 1541 columns and 15243 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 2e+02]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 1050 rows and 8 columns
+Presolve time: 0.05s
+Presolved: 2299 rows, 1533 columns, 6128 nonzeros
+Variable types: 0 continuous, 1533 integer (1533 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.06 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Tue May 12 22:45:10 2015
+
+Optimize a model with 3268 rows, 1487 columns and 15113 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 2e+02]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 1050 rows and 8 columns
+Presolve time: 0.04s
+Presolved: 2218 rows, 1479 columns, 5912 nonzeros
+Variable types: 0 continuous, 1479 integer (1479 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.04 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Tue May 12 22:45:49 2015
+
+Optimize a model with 3312 rows, 1517 columns and 15039 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 2e+02]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 1049 rows and 8 columns
+Presolve time: 0.04s
+Presolved: 2263 rows, 1509 columns, 6032 nonzeros
+Variable types: 0 continuous, 1509 integer (1509 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.04 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Tue May 12 22:47:28 2015
+
+Optimize a model with 3459 rows, 1613 columns and 18745 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 3e+03]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 657 rows and 12 columns
+Presolve time: 0.06s
+Presolved: 2802 rows, 1601 columns, 11096 nonzeros
+Variable types: 0 continuous, 1601 integer (1601 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.06 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Tue May 12 22:47:58 2015
+
+Optimize a model with 8841 rows, 5201 columns and 99034 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 7e+03]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 2030 rows and 663 columns
+Presolve time: 0.42s
+Presolved: 6811 rows, 4538 columns, 18156 nonzeros
+Variable types: 0 continuous, 4538 integer (4538 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.43 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Tue May 12 22:48:22 2015
+
+Optimize a model with 8853 rows, 5209 columns and 99266 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 7e+03]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 822 rows and 36 columns
+Presolve time: 0.32s
+Presolved: 8031 rows, 5173 columns, 38957 nonzeros
+Variable types: 0 continuous, 5173 integer (5173 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.34 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%

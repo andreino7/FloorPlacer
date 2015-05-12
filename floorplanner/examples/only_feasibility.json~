@@ -1,0 +1,48 @@
+{
+	"regions_data" : {
+		"rec1" : {
+			"resources" : {"CLB" : 2320, "BRAM" : 4},
+			"io" : []
+		},
+		"rec2" : {
+			"resources" : {"CLB" : 880, "BRAM" : 4},
+			"io" : []
+		},
+		"rec3" : {
+			"resources" : {"CLB" : 920, "BRAM" : 8, "DSP" : 8},
+			"io" : []
+		},
+		"rec4" : {
+			"resources" : {"CLB" : 1240},
+			"io" : [
+				{"tileX" : 0.5, "tileY" : 7.5, "wires" : 15}
+			]
+		},
+		"rec5" : {
+			"resources" : {"CLB" : 1720},
+			"io" : [
+				{"tileX" : 0.5, "tileY" : 7.5, "wires" : 15}
+			]
+		}
+	},
+	"communications" : [
+		{"from" : "rec1", "to" : "rec2", "wires" : 35},
+		{"from" : "rec3", "to" : "rec2", "wires" : 26},
+		{"from" : "rec4", "to" : "rec2", "wires" : 22},
+		{"from" : "rec5", "to" : "rec3", "wires" : 31}
+	],
+	"obj_weights" : {
+		"wirelength" : 0,
+		"perimeter" : 0,
+		"resources" : 0
+	},
+	"res_cost" : {
+		"CLB" : 1,
+		"BRAM" : 1,
+		"DSP" : 1
+	}, 
+	"placement_generation_mode" : "irreducible",
+	"gurobi_params" : {
+		"MIPFocus": 1
+	}
+}

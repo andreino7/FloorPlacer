@@ -1,0 +1,66 @@
+# the following is a sample problem
+# it shows how to call the floorplan directly
+
+from gurobipy import *
+
+problem = {}
+problem['fpga_file'] =  '/home/marco/Dropbox/FCCM_Florplacer/2015/test_cases/MIP_new/floorplanner/XC5VLX110T.json'
+problem['regions'] = ['rec1','rec2','rec3','rec4','rec5']
+problem['regRes'] = {
+	('rec1','SLICE') : 2320,
+	('rec1','BRAM') : 4,
+	('rec1','DSP') : 0,
+
+	('rec2','SLICE') : 1880,
+	('rec2','BRAM') : 4,
+	('rec2','DSP') : 0,
+
+	('rec3','SLICE') : 920,
+	('rec3','BRAM') : 8,
+	('rec3','DSP') : 8,
+
+	('rec4','SLICE') : 3240,
+	('rec4','BRAM') : 0,
+	('rec4','DSP') : 0,
+
+	('rec5','SLICE') : 3720,
+	('rec5','BRAM') : 0,
+	('rec5','DSP') : 0,
+}
+problem['obj_weights'] = {
+	'WL' : 1,
+	'P' : 0,
+	'R' : 0
+}
+problem['res_cost'] = {
+	'SLICE' : 1,
+	'BRAM' : 1,
+	'DSP' : 1
+}
+problem['communications'] = {
+	('rec1','rec2') : 35,
+	('rec3','rec2') : 26,
+	('rec4','rec2') : 22,
+	('rec5','rec3') : 31,
+}
+problem['io'] = {
+	'rec5' : [
+		[57.5,3.5,39],
+		[0.5,1.5,40]
+	],
+	'rec4' : [
+		[0.5,7.5,15]
+	]
+}
+
+
+fixed = {
+	'rec1':{'x1':42,'y1':4,'x2':58,'y2':7},
+	'rec2':{'x1':29,'y1':4,'x2':41,'y2':7},
+	'rec3':{'x1':18,'y1':3,'x2':52,'y2':3},
+	'rec4':{'x1':4,'y1':4,'x2':28,'y2':7},
+	'rec5':{'x1':9,'y1':1,'x2':61,'y2':2}
+}
+
+import floorplan2
+floorplan2.solve(problem, False, None)
