@@ -26,6 +26,9 @@ var s;
 var objectiveFunction;
 var topScrollPosition = 0;
 var leftScrollPosition = 0;
+var scaleFactor = 1;
+var fpgaWidth;
+var fpgaHeight;
 
 
 function colour(type) {
@@ -151,9 +154,10 @@ Shape.prototype.contains = function (mx, my) {
     "use strict";
     // All we have to do is make sure the Mouse X,Y fall in the area between
     // the shape's X and (X + Height) and its Y and (Y + Height)
+    //alert("x: " + this.x + "y: "+ this.y);
 
-    return  (this.x - leftScrollPosition <= mx) && (this.x + this.w - leftScrollPosition >= mx) &&
-            (this.y - topScrollPosition <= my) && (this.y + this.h - topScrollPosition >= my);
+    return  (this.x*scaleFactor - leftScrollPosition <= mx) && (this.x*scaleFactor + this.w*scaleFactor - leftScrollPosition >= mx) &&
+            (this.y*scaleFactor - topScrollPosition <= my) && (this.y*scaleFactor + this.h*scaleFactor - topScrollPosition >= my);
 };
 
 function Resource(row, column, type) {
@@ -177,6 +181,8 @@ Shape.prototype.containsRsc = function (row, column) {
 
 };
 
+
+
 function CanvasState(canvas) {
     "use strict";
     // **** First some setup! ****
@@ -185,6 +191,7 @@ function CanvasState(canvas) {
     this.width = canvas.width;
     this.height = canvas.height;
     this.ctx = canvas.getContext('2d');
+    this.ctx.scale(scaleFactor,scaleFactor);
     // This complicates things a little but but fixes mouse co-ordinate problems
     // when there's a border or padding. See getMouse for more detail
     var stylePaddingLeft, stylePaddingTop, styleBorderLeft, styleBorderTop,
@@ -248,6 +255,8 @@ function CanvasState(canvas) {
         mouse = myState.getMouse(e);
         mx = mouse.x;
         my = mouse.y;
+        //alert("mousex: " + mx);
+        //alert("mousey: " + my);
         shapes = myState.shapes;
         l = shapes.length;
         for (i = l - 1; i >= 0; i -= 1) {
@@ -279,25 +288,22 @@ function CanvasState(canvas) {
             mouse = myState.getMouse(e);
             // We don't want to drag the object by its top-left corner, we want to drag it
             // from where we clicked. Thats why we saved the offset and use it here
-            if (myState.selection.x - leftScrollPosition - mouse.x < 0) {
+            if (myState.selection.x*scaleFactor - leftScrollPosition - mouse.x < 0) {
                 myState.selection.x = myState.selection.x + MOVING_CONSTANTX;
                 myState.selection.column = myState.selection.column + 1;
             }
-            if (myState.selection.x - leftScrollPosition - mouse.x > 0) {
+            if (myState.selection.x*scaleFactor - leftScrollPosition - mouse.x > 0) {
                 myState.selection.x = myState.selection.x - MOVING_CONSTANTX;
                 myState.selection.column = myState.selection.column - 1;
             }
-            if (myState.selection.y - topScrollPosition - mouse.y < 0) {
+            if (myState.selection.y*scaleFactor - topScrollPosition - mouse.y < 0) {
                 myState.selection.y = myState.selection.y + MOVING_CONSTANTY;
-
                 myState.selection.row = myState.selection.row + 1;
             }
-            if (myState.selection.y - topScrollPosition - mouse.y > 0) {
+            if (myState.selection.y*scaleFactor - topScrollPosition - mouse.y > 0) {
                 myState.selection.y = myState.selection.y - MOVING_CONSTANTY;
-
                 myState.selection.row = myState.selection.row - 1;
             }
-            myState.valid = false;
             myState.valid = false; // Something's dragging so we must redraw
         } else if (myState.resizeDragging) {
             // time ro resize!
@@ -309,7 +315,7 @@ function CanvasState(canvas) {
             // 5  6  7
             switch (myState.expectResize) {
                 case 0:
-                    if (oldx - mx - leftScrollPosition > 0 && oldy - my - topScrollPosition > 0) {
+                    if (oldx*scaleFactor - mx - leftScrollPosition > 0 && oldy*scaleFactor - my - topScrollPosition > 0) {
                         myState.selection.x = oldx - MOVING_CONSTANTX;
                         myState.selection.y = oldy - MOVING_CONSTANTY;
                         myState.selection.w += MOVING_CONSTANTX;
@@ -319,7 +325,7 @@ function CanvasState(canvas) {
                         myState.selection.width = myState.selection.width + 1;
                         myState.selection.height = myState.selection.height + 1;
                     }
-                    if (oldx - mx - leftScrollPosition < -MOVING_CONSTANTX && oldy - my - topScrollPosition < -MOVING_CONSTANTY) {
+                    if (oldx*scaleFactor - mx - leftScrollPosition < -MOVING_CONSTANTX && oldy*scaleFactor - my - topScrollPosition < -MOVING_CONSTANTY) {
                         myState.selection.x = oldx + MOVING_CONSTANTX;
                         myState.selection.y = oldy + MOVING_CONSTANTY;
                         myState.selection.w -= MOVING_CONSTANTX;
@@ -331,13 +337,13 @@ function CanvasState(canvas) {
                     }
                     break;
                 case 1:
-                    if (oldy - my - topScrollPosition > 0) {
+                    if (oldy*scaleFactor - my - topScrollPosition > 0) {
                         myState.selection.y = oldy - MOVING_CONSTANTY;
                         myState.selection.h += MOVING_CONSTANTY;
                         myState.selection.row = myState.selection.row - 1;
                         myState.selection.height = myState.selection.height + 1;
                     }
-                    if (oldy - my - topScrollPosition < -MOVING_CONSTANTY) {
+                    if (oldy*scaleFactor - my - topScrollPosition < -MOVING_CONSTANTY) {
                         myState.selection.y = oldy + MOVING_CONSTANTY;
                         myState.selection.h -= MOVING_CONSTANTY;
                         myState.selection.row = myState.selection.row + 1;
@@ -345,7 +351,7 @@ function CanvasState(canvas) {
                     }
                     break;
                 case 2:
-                    if (oldx - mx - leftScrollPosition < 0 && oldy - my - topScrollPosition > 0) {
+                    if (oldx*scaleFactor - mx - leftScrollPosition < 0 && oldy*scaleFactor - my - topScrollPosition > 0) {
                         myState.selection.y = oldy - MOVING_CONSTANTY;
                         myState.selection.w += MOVING_CONSTANTX;
                         myState.selection.h += MOVING_CONSTANTY;
@@ -354,7 +360,7 @@ function CanvasState(canvas) {
                         myState.selection.width = myState.selection.width + 1;
                         myState.selection.height = myState.selection.height + 1;
                     }
-                    if (oldy - my - topScrollPosition < -MOVING_CONSTANTY) {
+                    if (oldy*scaleFactor - my - topScrollPosition < -MOVING_CONSTANTY) {
                         myState.selection.y = oldy + MOVING_CONSTANTY;
                         myState.selection.w -= MOVING_CONSTANTX;
                         myState.selection.h -= MOVING_CONSTANTY;
@@ -365,13 +371,13 @@ function CanvasState(canvas) {
                     }
                     break;
                 case 3:
-                    if (oldx - mx - leftScrollPosition > 0) {
+                    if (oldx*scaleFactor - mx - leftScrollPosition > 0) {
                         myState.selection.x = oldx - MOVING_CONSTANTX;
                         myState.selection.w += MOVING_CONSTANTX;
                         myState.selection.column = myState.selection.column - 1;
                         myState.selection.width = myState.selection.width + 1;
                     }
-                    if (oldx - mx - leftScrollPosition < -MOVING_CONSTANTX) {
+                    if (oldx*scaleFactor - mx - leftScrollPosition < -MOVING_CONSTANTX) {
                         myState.selection.x = oldx + MOVING_CONSTANTX;
                         myState.selection.w -= MOVING_CONSTANTX;
                         myState.selection.column = myState.selection.column + 1;
@@ -379,17 +385,17 @@ function CanvasState(canvas) {
                     }
                     break;
                 case 4:
-                    if (oldx + myState.selection.w - mx - leftScrollPosition < 0) {
+                    if (oldx*scaleFactor + myState.selection.w*scaleFactor - mx - leftScrollPosition < 0) {
                         myState.selection.w += MOVING_CONSTANTX;
                         myState.selection.width = myState.selection.width + 1;
                     }
-                    if (oldx + myState.selection.w - mx - leftScrollPosition > MOVING_CONSTANTX) {
+                    if (oldx*scaleFactor + myState.selection.w*scaleFactor - mx - leftScrollPosition > MOVING_CONSTANTX) {
                         myState.selection.w -= MOVING_CONSTANTX;
                         myState.selection.width = myState.selection.width - 1;
                     }
                     break;
                 case 5:
-                    if (oldx - mx - leftScrollPosition > 0 && oldy - my - topScrollPosition < 0) {
+                    if (oldx*scaleFactor- mx - leftScrollPosition > 0 && oldy*scaleFactor - my - topScrollPosition < 0) {
                         myState.selection.x = oldx - MOVING_CONSTANTX;
                         myState.selection.w += MOVING_CONSTANTX;
                         myState.selection.h += MOVING_CONSTANTY;
@@ -398,7 +404,7 @@ function CanvasState(canvas) {
                         myState.selection.width = myState.selection.width + 1;
                         myState.selection.height = myState.selection.height + 1;
                     }
-                    if (oldx - mx - leftScrollPosition < -MOVING_CONSTANTX) {
+                    if (oldx*scaleFactor - mx - leftScrollPosition < -MOVING_CONSTANTX) {
                         myState.selection.x = oldx + MOVING_CONSTANTX;
                         myState.selection.w -= MOVING_CONSTANTX;
                         myState.selection.h -= MOVING_CONSTANTY;
@@ -409,11 +415,11 @@ function CanvasState(canvas) {
                     }
                     break;
                 case 6:
-                    if (oldy + myState.selection.h - my - topScrollPosition < 0) {
+                    if (oldy*scaleFactor + myState.selection.h*scaleFactor - my - topScrollPosition < 0) {
                         myState.selection.h += MOVING_CONSTANTY;
                         myState.selection.height = myState.selection.height + 1;
                     }
-                    if (oldy + myState.selection.h - my - topScrollPosition > MOVING_CONSTANTY) {
+                    if (oldy*scaleFactor + myState.selection.h*scaleFactor - my - topScrollPosition > MOVING_CONSTANTY) {
                         myState.selection.h -= MOVING_CONSTANTY;
                         myState.selection.height = myState.selection.height - 1;
 
@@ -421,13 +427,13 @@ function CanvasState(canvas) {
 
                     break;
                 case 7:
-                    if (oldx + myState.selection.w - mx - leftScrollPosition < 0 && oldy + myState.selection.h - my - topScrollPosition < 0) {
+                    if (oldx*scaleFactor + myState.selection.w - mx - leftScrollPosition < 0 && oldy*scaleFactor + myState.selection.h*scaleFactor - my - topScrollPosition < 0) {
                         myState.selection.w += MOVING_CONSTANTX;
                         myState.selection.h += MOVING_CONSTANTY;
                         myState.selection.width = myState.selection.width + 1;
                         myState.selection.height = myState.selection.height + 1;
                     }
-                    if (oldx + myState.selection.w - mx > MOVING_CONSTANTX && oldy + myState.selection.h - my > MOVING_CONSTANTY) {
+                    if (oldx*scaleFactor + myState.selection.w*scaleFactor - mx > MOVING_CONSTANTX && oldy*scaleFactor + myState.selection.h*scaleFactor - my > MOVING_CONSTANTY) {
                         myState.selection.w -= MOVING_CONSTANTX;
                         myState.selection.h -= MOVING_CONSTANTY;
                         myState.selection.width = myState.selection.width - 1;
@@ -451,8 +457,8 @@ function CanvasState(canvas) {
 
                 // we dont need to use the ghost context because
                 // selection handles will always be rectangles
-                if (mx >= cur.x - leftScrollPosition && mx <= cur.x - leftScrollPosition + myState.selectionBoxSize &&
-                        my >= cur.y - topScrollPosition && my <= cur.y - topScrollPosition + myState.selectionBoxSize) {
+                if (mx >= cur.x*scaleFactor - leftScrollPosition && mx <= cur.x*scaleFactor - leftScrollPosition + myState.selectionBoxSize*scaleFactor &&
+                        my >= cur.y*scaleFactor - topScrollPosition && my <= cur.y*scaleFactor - topScrollPosition + myState.selectionBoxSize*scaleFactor) {
                     // we found one!
                     myState.expectResize = i;
                     myState.valid = false;
@@ -739,11 +745,16 @@ function updateCounter(region, rscType) {
 
 function init(result) {
     var mydata = JSON.parse(result);
-    var canvas = document.getElementById('my-canvas');
-    canvas.width = (mydata.width) * (width + INTERSPACE + 1) + LEFTSPACE + 5;
+    fpgaWidth = mydata.width;
+    fpgaHeight = mydata.height;
+    initCanvas();
+
+ /*   var canvas = document.getElementById('my-canvas');
+    canvas.width = ((mydata.width) * (width + INTERSPACE + 1) + LEFTSPACE + 5);
     canvas.height = mydata.height * (height + INTERSPACE + 1) + LEFTSPACE;
+    scaleFactor = 1;*/
     objectiveFunction = new ObjectiveFunction();
-    s = new CanvasState(canvas);
+ //   s = new CanvasState(canvas);
     for (var i = 0; i < (mydata.width) * (mydata.height); i++) {
         var rsc = new Resource(mydata.blocks[i].y, mydata.blocks[i].x, mydata.blocks[i].t);
         s.addResource(rsc);
@@ -751,7 +762,25 @@ function init(result) {
     s.drawRsc();
 
     addRegion();
+
 }
+
+function initCanvas() {
+    var canvas = document.getElementById('my-canvas');
+    canvas.width = (fpgaWidth * (width + INTERSPACE + 1) + LEFTSPACE + 5)*scaleFactor;
+    canvas.height = (fpgaHeight * (height + INTERSPACE + 1) + LEFTSPACE)*scaleFactor;
+    s = new CanvasState(canvas);
+}
+
+function zoomin(param) {
+    scaleFactor = scaleFactor*param;
+    var tmpShape = s.shapes;
+    var tmpRsc = s.resources;
+    initCanvas();
+    s.resources = tmpRsc;
+    s.drawRsc();
+    s.shapes = tmpShape;
+};
 
 
 
@@ -771,6 +800,12 @@ $(document).ready(function () {
     $("#drawDiv").scroll(function () {
         leftScrollPosition = $("#drawDiv").scrollLeft();
         topScrollPosition = $("#drawDiv").scrollTop();
+        $("#plusButton").css('right',-leftScrollPosition+5);
+        $("#plusButton").css('bottom',-topScrollPosition+35);
+        $("#minusButton").css('right',-leftScrollPosition+5);
+        $("#minusButton").css('bottom',-topScrollPosition+5);
+
+
     });
 
 
@@ -889,8 +924,8 @@ function optimize() {
                 var y2 = myData.regions["rec" + s.shapes[i].id].y2;
                 s.shapes[i].column = x1;
                 s.shapes[i].row = y1;
-                s.shapes[i].width = Math.abs(x2 - x1);
-                s.shapes[i].height = Math.abs(y2 - y1);
+                s.shapes[i].width = Math.abs(x2 - x1) + 1;
+                s.shapes[i].height = Math.abs(y2 - y1) + 1;
                 s.shapes[i].x = x1 * MOVING_CONSTANTX + 4;
                 s.shapes[i].y = y1 * MOVING_CONSTANTY + 4;
                 s.shapes[i].h = MOVING_CONSTANTY * s.shapes[i].height;

@@ -43,6 +43,8 @@ and open the template in the editor.
         <div id='drawDiv' class="scrolled">
             <canvas id="my-canvas" width="1000" height="1000" style="background-color: white;">
             </canvas>
+            <button  onclick="zoomin(2)" id="plusButton" style="position: absolute; bottom: 35px; width: 30px; right: 5px; font-size: 20px"> + </button>
+            <button  onclick="zoomin(0.5)" id="minusButton" style="position: absolute; bottom: 5px; width: 30px; right: 5px; font-size: 20px"> - </button>
 
         </div>
 
@@ -54,7 +56,7 @@ and open the template in the editor.
                 <button onclick="addRegion();" style="float: right">Add Region</button>
             </div>
             
-                        <div id="objFunc" class="objectiveFunction">
+            <div id="objFunc" class="objectiveFunction">
                 <h2 class="box">Objective</h2>
                 <div id="objectiveFunction">
                 </div>

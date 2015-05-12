@@ -14,6 +14,7 @@ and open the template in the editor.
  height: 600px; 
  overflow: scroll;
  border:1px solid black;
+ position: relative;
 }
 
     
