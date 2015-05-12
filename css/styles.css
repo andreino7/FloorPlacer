@@ -1,0 +1,19 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 22-apr-2015, 13.30.09
+    Author     : Andrea
+*/
+
+.scrolled{
+ float: left; 
+ width: 800px; 
+ height: 600px; 
+ overflow: scroll;
+ border:1px solid black;
+}
+
+    

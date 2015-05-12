@@ -1,0 +1,214 @@
+h2.box
+{
+    font-size: 18px;
+    margin:0px;
+}
+h3.box
+{
+    font-size:14px;
+    margin:0px;
+}
+div.container
+{
+    overflow: auto;
+}
+div.regionInfo, div.parInfo, div.objective, div.objectiveFunction, div.optimization
+{
+    border: solid 1px #333;
+    padding: 10px;
+    margin-left:10px;
+    margin-top: 5px;
+}
+p.warning
+{
+    color:#FF3333;
+    float:left;
+    font-size:16px;
+    width:500px;
+    margin:10px;
+}
+/* ----------- region info ----------------- */
+div.regionInfo
+{
+    padding:0px;
+    float:left;
+}
+div.regionInfo h2.box
+{
+    padding:10px;
+    background:#333;
+    color:#fff;
+}
+#regionInfo
+{
+    position: relative;
+    overflow-y:scroll;
+    height:400px;
+    width: 340px;
+    padding-left:5px;
+    border-top: solid 1px #ddd;
+}
+
+
+/* ----------- parameters info ----------------- */
+div.parInfo
+{
+    overflow:auto;
+}
+div.parInfo input
+{
+    width:50px;
+}
+div.parBox
+{
+    float:left;
+}
+div.parBox + div.parBox
+{
+    margin-left:30px;
+}
+
+
+/* ----------- objective ----------------- */
+div.objective
+{
+    float:left;
+    padding:0px;
+    margin-bottom:5px;
+    width: 300px;
+}
+div.objective h2.box
+{
+    padding:10px;
+    background:#333;
+    color:#fff;
+}
+
+/* ----------- objective function ----------------- */
+div.objectiveFunction
+{
+    float:left;
+    padding:0px;
+    margin-bottom:5px;
+    width: 400px;
+}
+div.objectiveFunction h2.box
+{
+    padding:10px;
+    background:#333;
+    color:#fff;
+}
+
+
+/* ----------- optimization ----------------- */
+div.optimization
+{
+    margin-top:5px;
+    width:600px;
+    clear:both;
+}
+div.optimization input
+{
+    width:70px;
+    background:#DDD;
+}
+div.optimization input.optimize
+{
+    width:auto;
+}
+div.optimization table
+{
+    width:95%;
+}
+div.optimization table td
+{
+    border: solid 1px #DDD;
+    padding:2px 4px;
+}
+div.optimization table
+{
+    border-collapse:collapse;
+}
+div.optimization p
+{
+    margin: 4px 0px;
+}
+div.optimization h3, div.parInfo h3
+{
+    margin: 8px 0px;
+}
+div.optimization h2
+{
+    color: #0000FF;
+}
+input.readonly
+{
+    background: #DDD;
+}
+div.regionInfo input
+{
+    width: 40px;
+}
+div.overlay
+{
+    z-index:10;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.5);
+    display:none;
+}
+div.overlay div
+{
+    position:relative;
+    top:50%;
+    left:50%;
+    padding:10px;
+    border:solid 1px #222;
+    background:#fff;
+    width:150px;
+    height:37px;
+    font-weight:bold;
+    margin-left:-20px;
+    margin-top:-20px;
+}
+
+
+
+div.head p
+{
+    margin:2px 5px;
+    font-weight:bold;
+}
+div.sliders div
+{
+    height: 150px;
+    margin: 0px auto;
+}
+div.sliders input
+{
+    width:50px;
+    margin: 0px auto;
+    display:block;
+}
+div.sliders table
+{
+    border-collapse:collapse;
+}
+div.sliders table td
+{
+    text-align: center;
+    border:solid 1px #DDD;
+}
+div.sliders table thead td
+{
+    padding:0px 4px;
+}
+#statusStr
+{
+    font-weight:bold;
+}
+#reason
+{
+    color:#FF0000;
+}

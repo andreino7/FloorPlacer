@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Floorplanner</title>
+        <script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
+        <script type="text/javascript" src="js/libs/jqueryui/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/data2.json"></script>
+        <script type="text/javascript" src="js/drawer.js"></script>
+        <link href="css/styles.css" rel="stylesheet" type="text/css">
+        <link href="css/floorplan.css" rel="stylesheet" type="text/css">    
+        <link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css">        
+
+
+
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body onload="ajaxmagic()">
+        <div class="overlay" id="overlay">
+            <div id="loading">
+                <img src="img/loading.gif" alt="cannot">
+                &nbsp;
+                Optimizing...
+            </div>
+        </div>
+        <div style="float: left; width: 1000px">
+            <form>
+                FPGA model:
+                <select >
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+            </form>
+        </div>
+        <div id='drawDiv' class="scrolled">
+            <canvas id="my-canvas" width="1000" height="1000" style="background-color: white;">
+            </canvas>
+
+        </div>
+
+        <div>
+            <div class="regionInfo">
+                <h2 class="box">Regions info</h2>
+                <div id="regionInfo">
+                </div>
+                <button onclick="addRegion();" style="float: right">Add Region</button>
+            </div>
+            
+                        <div id="objFunc" class="objectiveFunction">
+                <h2 class="box">Objective</h2>
+                <div id="objectiveFunction">
+                </div>
+                <div>
+                    <table>
+                        <tr>
+                            <td>Plcement Generation Mode: </td>
+                            <td>
+                                <form action="changeMode();">
+                                    <input type="radio" name="mode" checked="checked" value="irreducible">Irreducible 
+                                    <input type="radio" name="mode" value="width-reduce">Width-Reduce
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Time Limit (seconds):</td>
+                            <td>
+                                <form>
+                                    <input value="18" type="text" maxlength="4" id="TL" onkeyup="updateTime()" onkeypress="return checkKey(event);">
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Precision:</td>
+                            <td>
+                                <form>
+                                    <select id="precisionMenu" onchange="selectPrecision();">
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>                      
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button onclick="optimize();" style="float: right;"> Optimize </button>
+            </div>
+            
+            
+            <div class="objective">
+                <h2 class="box">Metrics Relevance</h2>
+                <div class="sliders">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Wirelength</td>
+                                <td>Perimeter</td>
+                                <td>Wasted<br/>Resources</td>
+                                <td>Bitstream</td>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div id="sliderWL" class="ui-slider-vertical"></div></td>
+                                <td><div id="sliderP"></div></td>
+                                <td><div id="sliderR"></div></td>
+                                <td><div id="sliderBS"></div></td>
+                            </tr>
+                            <tr>
+                                <td><input class="readonly" value="0" type="text" id="qWL" readonly="readonly"></td>
+                                <td><input class="readonly" value="0" type="text" id="qP" readonly="readonly"></td>
+                                <td><input class="readonly" value="0" type="text" id="qR" readonly="readonly"></td>
+                                <td><input class="readonly" value="0" type="text" id="qBS" readonly="readonly"></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </body>
+
+
+</html>
