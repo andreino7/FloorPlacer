@@ -596,6 +596,7 @@ CanvasState.prototype.drawRsc = function () {
             resources[i].draw(ctx);
         }
         var base64 = s.canvas.toDataURL();
+        s.clear();
         s.canvas.style.backgroundImage = "url(" + base64 + ")";
 
 
@@ -890,8 +891,9 @@ function selectPrecision() {
 function optimize() {
 
     $('#overlay').css('display', 'block');
-
+    var menu = document.getElementById("fpgaSelection");
     var toOpt = {};
+    toOpt.fpga = menu.options[menu.selectedIndex].value;
     toOpt.regions_data = {};
 
     for (var i = 0; i < s.shapes.length; i++) {

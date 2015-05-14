@@ -3,7 +3,7 @@
 
 if ($_GET['fpga']) {
         $x = $_GET['fpga'];
-        $y = file_get_contents("floorplanner/floorplanner/".$x.".json");
+        $y = file_get_contents("floorplanner/floorplanner/".$x."_Port".".json");
         echo $y;
 }
 
