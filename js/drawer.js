@@ -744,10 +744,10 @@ function updateCounter(region, rscType) {
 
 
 function init(result) {
-    var mydata = JSON.parse(result);
+   /* var mydata = JSON.parse(result);
     fpgaWidth = mydata.width;
     fpgaHeight = mydata.height;
-    initCanvas();
+    initCanvas(); */
 
  /*   var canvas = document.getElementById('my-canvas');
     canvas.width = ((mydata.width) * (width + INTERSPACE + 1) + LEFTSPACE + 5);
@@ -755,20 +755,51 @@ function init(result) {
     scaleFactor = 1;*/
     objectiveFunction = new ObjectiveFunction();
  //   s = new CanvasState(canvas);
-    for (var i = 0; i < (mydata.width) * (mydata.height); i++) {
+/*    for (var i = 0; i < (mydata.width) * (mydata.height); i++) {
         var rsc = new Resource(mydata.blocks[i].y, mydata.blocks[i].x, mydata.blocks[i].t);
         s.addResource(rsc);
     }
     s.drawRsc();
 
+    addRegion(); */
+    var mydata = JSON.parse(result);
+    var xmax = 0;
+    var ymax = 0;
+    var por;
+    alert(mydata.portions.length);
+    for (var i = 0; i < mydata.portions.length; i++) {
+        if (mydata.portions[i].x2 > xmax) {
+            xmax = mydata.portions[i].x2;
+        }
+        if (mydata.portions[i].y2 > ymax) {
+            ymax = mydata.portions[i].y2;
+        } 
+    }  
+    fpgaWidth = xmax+1;
+    fpgaHeight = ymax;
+    initCanvas();  
+    alert("h");
+    for (var k = 0; k < mydata.portions.length; k++) {
+        for (var i = mydata.portions[k].x1; i <= mydata.portions[k].x2; i++) {
+            for (var j = mydata.portions[k].y1; j <= mydata.portions[k].y2; j++) {
+                var rsc = new Resource(j, i, mydata.portions[k].type);
+                s.addResource(rsc);
+            }
+        }
+    }
+    s.drawRsc();
     addRegion();
 
 }
 
 function initCanvas() {
     var canvas = document.getElementById('my-canvas');
-    canvas.width = (fpgaWidth * (width + INTERSPACE + 1) + LEFTSPACE + 5)*scaleFactor;
+    canvas.width = (fpgaWidth * (width + INTERSPACE + 1) + (LEFTSPACE+5))*scaleFactor;
+    alert(fpgaWidth);
+    alert(fpgaHeight);
+    alert("width"+canvas.width);
     canvas.height = (fpgaHeight * (height + INTERSPACE + 1) + LEFTSPACE)*scaleFactor;
+    alert(canvas.height);
     s = new CanvasState(canvas);
 }
 
