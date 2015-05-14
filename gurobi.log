@@ -815,3 +815,118 @@ Thread count was 2 (of 4 available processors)
 
 Optimal solution found (tolerance 1.00e-04)
 Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:00:20 2015
+
+Optimize a model with 112 rows, 49 columns and 407 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 2e+02]
+  Objective range [2e-01, 2e-01]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0.223214
+Presolve removed 51 rows and 8 columns
+Presolve time: 0.00s
+Presolved: 61 rows, 41 columns, 1300 nonzeros
+Variable types: 0 continuous, 41 integer (41 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.232142857143e-01, best bound 2.232142857143e-01, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:00:52 2015
+
+Optimize a model with 112 rows, 49 columns and 407 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 2e+02]
+  Objective range [2e-01, 2e-01]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0.223214
+Presolve removed 51 rows and 8 columns
+Presolve time: 0.00s
+Presolved: 61 rows, 41 columns, 1300 nonzeros
+Variable types: 0 continuous, 41 integer (41 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.232142857143e-01, best bound 2.232142857143e-01, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:00:59 2015
+
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:01:04 2015
+
+Optimize a model with 112 rows, 49 columns and 407 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 2e+02]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 51 rows and 8 columns
+Presolve time: 0.00s
+Presolved: 61 rows, 41 columns, 160 nonzeros
+Variable types: 0 continuous, 41 integer (41 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:01:10 2015
+
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:02:34 2015
+
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:02:51 2015
+
+Optimize a model with 112 rows, 49 columns and 407 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 2e+02]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 51 rows and 8 columns
+Presolve time: 0.00s
+Presolved: 61 rows, 41 columns, 160 nonzeros
+Variable types: 0 continuous, 41 integer (41 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.00 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:03:13 2015
+
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:03:23 2015
+
+
+Gurobi 6.0.3 (mac64) logging started Thu May 14 23:05:44 2015
+
+Optimize a model with 312 rows, 129 columns and 1147 nonzeros
+Coefficient statistics:
+  Matrix range    [1e+00, 6e+02]
+  Objective range [0e+00, 0e+00]
+  Bounds range    [1e+00, 1e+00]
+  RHS range       [1e+00, 1e+00]
+Found heuristic solution: objective 0
+Presolve removed 131 rows and 8 columns
+Presolve time: 0.01s
+Presolved: 181 rows, 121 columns, 480 nonzeros
+Variable types: 0 continuous, 121 integer (121 binary)
+
+Explored 0 nodes (0 simplex iterations) in 0.01 seconds
+Thread count was 4 (of 8 available processors)
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 0.000000000000e+00, best bound 0.000000000000e+00, gap 0.0%

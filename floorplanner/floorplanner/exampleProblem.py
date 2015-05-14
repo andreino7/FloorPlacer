@@ -15,7 +15,7 @@ import FPGAALteraToRabozziFormat as decode
 import floorplanner
 
 if 'precision' in problem.keys():
-	prec = problem['precision']
+	prec = int(problem['precision'])
 else:
     prec=0
 
