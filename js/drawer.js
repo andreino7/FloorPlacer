@@ -54,7 +54,7 @@ function ObjectiveFunction() {
     this.bitstream = 0;
     this.genMode = DEFAULTGENMODE;
     this.timeLimit = DEFAULTIMELIMIT;
-    this.precision = "low";
+    this.precision = 0;
 }
 
 ObjectiveFunction.prototype.updateWire = function (newValue) {
@@ -582,7 +582,6 @@ CanvasState.prototype.draw = function () {
 CanvasState.prototype.drawRsc = function () {
     var ctx, shapes, i, shape, mySel;
     // if our state is invalid, redraw and validate!
-    if (!this.valid) {
         ctx = this.ctx;
         shapes = this.shapes;
         var resources = this.resources;
@@ -595,13 +594,11 @@ CanvasState.prototype.drawRsc = function () {
         for (var i = 0; i < l; i++) {
             resources[i].draw(ctx);
         }
-        var base64 = s.canvas.toDataURL();
-        s.clear();
-        s.canvas.style.backgroundImage = "url(" + base64 + ")";
+        var base64 = this.canvas.toDataURL();
+        this.canvas.style.backgroundImage = "url(" + base64 + ")";
 
 
-    }
-};
+    };
 
 
 // Creates an object with x and y defined, set to the mouse position relative to the state's canvas
@@ -908,6 +905,8 @@ function optimize() {
 
     toOpt.communications = [];
 
+    toOpt.precision = objectiveFunction.precision;
+
     toOpt.obj_weights = {};
     toOpt.obj_weights.wirelength = objectiveFunction.wirelength;
     toOpt.obj_weights.perimeter = objectiveFunction.perimeter;
@@ -944,6 +943,7 @@ function optimize() {
                 s.shapes[i].h = MOVING_CONSTANTY * s.shapes[i].height;
                 s.shapes[i].w = MOVING_CONSTANTX * s.shapes[i].width;
                 updateCoverage(s.shapes[i]);
+                alert(myData.time);
             }
             $('#overlay').css('display', 'none');
             s.valid = false;

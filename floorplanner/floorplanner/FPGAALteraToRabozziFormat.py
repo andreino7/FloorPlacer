@@ -1,5 +1,5 @@
 
-def decodeFPGAAltera(name):
+def decodeFPGAAltera(name,prec):
 
     import json
     import fpgaApi as f
@@ -37,7 +37,7 @@ def decodeFPGAAltera(name):
         json.dump(data, outfile, sort_keys = True, indent = 4, ensure_ascii=False)
     '''
 
-def solutionToReal(name,solution):
+def solutionToReal(name,solution,prec):
     import copy
     import fpgaApi as f
     import EncodeAndDecodeInPortions as enc
