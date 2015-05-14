@@ -32,9 +32,9 @@ and open the template in the editor.
         <div style="float: left; width: 1000px">
             <form>
                 FPGA model:
-                <select >
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
+                <select id="fpgaSelection" onchange="ajaxmagic();" >
+                    <option selected="selected" value="5SEEBF45I3_Port">Satrix V 5SEEBF45I3</option>
+                    <option value="5SGSMD4E1H29C1_Port">Satrix V 5SGSMD4E1H29C1</option>
                     <option value="mercedes">Mercedes</option>
                     <option value="audi">Audi</option>
                 </select>

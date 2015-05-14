@@ -29,6 +29,9 @@ var leftScrollPosition = 0;
 var scaleFactor = 1;
 var fpgaWidth;
 var fpgaHeight;
+var MINZOOM = 0.25;
+var MAXZOOM = 2;
+
 
 
 function colour(type) {
@@ -154,7 +157,6 @@ Shape.prototype.contains = function (mx, my) {
     "use strict";
     // All we have to do is make sure the Mouse X,Y fall in the area between
     // the shape's X and (X + Height) and its Y and (Y + Height)
-    //alert("x: " + this.x + "y: "+ this.y);
 
     return  (this.x*scaleFactor - leftScrollPosition <= mx) && (this.x*scaleFactor + this.w*scaleFactor - leftScrollPosition >= mx) &&
             (this.y*scaleFactor - topScrollPosition <= my) && (this.y*scaleFactor + this.h*scaleFactor - topScrollPosition >= my);
@@ -255,8 +257,6 @@ function CanvasState(canvas) {
         mouse = myState.getMouse(e);
         mx = mouse.x;
         my = mouse.y;
-        //alert("mousex: " + mx);
-        //alert("mousey: " + my);
         shapes = myState.shapes;
         l = shapes.length;
         for (i = l - 1; i >= 0; i -= 1) {
@@ -680,7 +680,6 @@ function updateCoverage(region) {
     for (var i = 0; i < rscs.length; i++) {
         if (region.containsRsc(rscs[i].row, rscs[i].column)) {
             updateCounter(region, rscs[i].type);
-            //    alert("contains: " + rscs[i].type + " row: " + rscs[i].row + " column: " + rscs[i].column);
         }
     }
     updateCoverageView(region);
@@ -744,29 +743,12 @@ function updateCounter(region, rscType) {
 
 
 function init(result) {
-   /* var mydata = JSON.parse(result);
-    fpgaWidth = mydata.width;
-    fpgaHeight = mydata.height;
-    initCanvas(); */
 
- /*   var canvas = document.getElementById('my-canvas');
-    canvas.width = ((mydata.width) * (width + INTERSPACE + 1) + LEFTSPACE + 5);
-    canvas.height = mydata.height * (height + INTERSPACE + 1) + LEFTSPACE;
-    scaleFactor = 1;*/
     objectiveFunction = new ObjectiveFunction();
- //   s = new CanvasState(canvas);
-/*    for (var i = 0; i < (mydata.width) * (mydata.height); i++) {
-        var rsc = new Resource(mydata.blocks[i].y, mydata.blocks[i].x, mydata.blocks[i].t);
-        s.addResource(rsc);
-    }
-    s.drawRsc();
-
-    addRegion(); */
     var mydata = JSON.parse(result);
     var xmax = 0;
     var ymax = 0;
     var por;
-    alert(mydata.portions.length);
     for (var i = 0; i < mydata.portions.length; i++) {
         if (mydata.portions[i].x2 > xmax) {
             xmax = mydata.portions[i].x2;
@@ -778,7 +760,6 @@ function init(result) {
     fpgaWidth = xmax+1;
     fpgaHeight = ymax;
     initCanvas();  
-    alert("h");
     for (var k = 0; k < mydata.portions.length; k++) {
         for (var i = mydata.portions[k].x1; i <= mydata.portions[k].x2; i++) {
             for (var j = mydata.portions[k].y1; j <= mydata.portions[k].y2; j++) {
@@ -795,34 +776,34 @@ function init(result) {
 function initCanvas() {
     var canvas = document.getElementById('my-canvas');
     canvas.width = (fpgaWidth * (width + INTERSPACE + 1) + (LEFTSPACE+5))*scaleFactor;
-    alert(fpgaWidth);
-    alert(fpgaHeight);
-    alert("width"+canvas.width);
     canvas.height = (fpgaHeight * (height + INTERSPACE + 1) + LEFTSPACE)*scaleFactor;
-    alert(canvas.height);
     s = new CanvasState(canvas);
 }
 
 function zoomin(param) {
-    scaleFactor = scaleFactor*param;
-    var tmpShape = s.shapes;
-    var tmpRsc = s.resources;
-    initCanvas();
-    s.resources = tmpRsc;
-    s.drawRsc();
-    s.shapes = tmpShape;
+    if (scaleFactor*param <= MAXZOOM && scaleFactor*param >= MINZOOM) {
+        scaleFactor = scaleFactor*param;
+        var tmpShape = s.shapes;
+        var tmpRsc = s.resources;
+        initCanvas();
+        s.resources = tmpRsc;
+        s.drawRsc();
+        s.shapes = tmpShape;
+    }
+
 };
 
 
 
 
 function ajaxmagic() {
-    //   var menu = document.getElementById("fpgaSelection");
+    var menu = document.getElementById("fpgaSelection");
     $.ajax({
         type: "GET",
         url: "optimizationScript.php",
-        data: "fpga=" + "aa", //menu.options[menu.selectedIndex].value,
+        data: "fpga=" + menu.options[menu.selectedIndex].value,
         success: function (result) {
+            $("#regionInfo").empty();
             init(result);
         }});
 }
@@ -902,7 +883,6 @@ function updateTime() {
 function selectPrecision() {
     var menu = document.getElementById("precisionMenu");
     objectiveFunction.precision = menu.options[menu.selectedIndex].value;
-    alert(objectiveFunction.precision);
 }
 
 

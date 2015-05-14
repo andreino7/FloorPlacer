@@ -3,24 +3,11 @@
 
 if ($_GET['fpga']) {
         $x = $_GET['fpga'];
-        $y = file_get_contents("js/fpgas/data2.json");
-
-        $data = json_decode($y,true);
-
-
-
-        
-        
-     /*   foreach ($data['blocks'] as $item) {
-           $rsc = new Resoruce($item['y'], $item['x'],$item['t']);
-           $fpga->addResource($rsc);
-        }*/
-    
+        $y = file_get_contents("floorplanner/floorplanner/".$x.".json");
         echo $y;
-
-          
- 
 }
+
+
 
 if ($_POST['optimize']) {
     $json = $_POST['optimize'];
