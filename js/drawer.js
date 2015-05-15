@@ -823,7 +823,7 @@ $(document).ready(function () {
     $(function () {
         $("#sliderP").slider({
             orientation: 'vertical',
-            slide: function (evente, ui) {
+            slide: function (event, ui) {
                 $("#qP").val(ui.value);
                 objectiveFunction.updatePerimeter(ui.value);
             }
@@ -834,7 +834,7 @@ $(document).ready(function () {
     $(function () {
         $("#sliderBS").slider({
             orientation: 'vertical',
-            slide: function (evente, ui) {
+            slide: function (event, ui) {
                 $("#qBS").val(ui.value);
                 objectiveFunction.updateBitstream(ui.value);
             }
@@ -845,7 +845,7 @@ $(document).ready(function () {
     $(function () {
         $("#sliderR").slider({
             orientation: 'vertical',
-            slide: function (evente, ui) {
+            slide: function (event, ui) {
                 $("#qR").val(ui.value);
                 objectiveFunction.updateWasted(ui.value);
             }
@@ -895,8 +895,8 @@ function optimize() {
 
     toOpt.obj_weights = {};
     toOpt.obj_weights.perimeter = objectiveFunction.perimeter;
-    toOpt.obj_weights.resources = objectiveFunction.bitstream;
-    toOpt.obj_weights.bitstream = objectiveFunction.wastedResources;
+    toOpt.obj_weights.bitstream = objectiveFunction.bitstream;
+    toOpt.obj_weights.resources = objectiveFunction.wastedResources;
     toOpt.res_cost = {};
     toOpt.res_cost.LAB = 1;
     toOpt.res_cost.MK20 = 1;
