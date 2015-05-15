@@ -3,8 +3,6 @@
 """
 PRECISIONS=[10,15,30]
 
-with open('floorplanner/fpga/5SEEBF45I3.json') as f:
-	fpga = eval(f.read())
 
 with open('floorplanner/floorplanner/problem.json') as f:
 	problem = eval(f.read())
@@ -19,10 +17,10 @@ if 'precision' in problem.keys():
 else:
     prec=0
 
-fpga=decode.decodeFPGAAltera('5SEEBF45I3',PRECISIONS[prec])
+fpga=decode.decodeFPGAAltera(problem['fpga'],PRECISIONS[prec])
 res= floorplanner.solve(problem, fpga, False, None)
 
-res = decode.solutionToReal('5SEEBF45I3',res,PRECISIONS[prec])
+res = decode.solutionToReal(problem['fpga'],res,PRECISIONS[prec])
 print res
 import json
 

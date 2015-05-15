@@ -1,5 +1,6 @@
 
 
+
 from gurobipy import *
 import traceback
 import sys
@@ -74,11 +75,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
             problem['io'][regName].append((io['tileX'],io['tileY'],io['wires']))
 
 
-    communications = {}
-    for comm in problem['communications']:
-        communications[(comm['from'], comm['to'])] = comm['wires']
 
-    problem['communications'] = communications
 
 
 
@@ -146,8 +143,9 @@ def solve(problem, fpgaData, relocation, fixedRegions):
     # max perimeter
     Pmax = len(problem['regions'])*(fpga['maxY']*fpga['tileH'] + fpga['maxX']*fpga['tileW'])*2
 
-    # max wirelength
-    WLmax = sum([problem['communications'][con] for con in problem['communications']])
+    #max WL
+    WLmax=0
+
     for r in problem['io']:
         WLmax += sum(io[2] for io in problem['io'][r])
 
@@ -161,26 +159,6 @@ def solve(problem, fpgaData, relocation, fixedRegions):
         c+=lengths[t,0]
 
     BMax =c*2
-
-
-    #function for the computation of the cluster id of an area
-    #example: computeCluster((x1,y1,x2,y2))
-    def computeCluster(area):
-        cluster = ''
-        for t in fpga['resources']:
-            cluster += '@' + t
-            for y in xrange(area[1], area[3] + 1):
-                count = 1
-                cluster += '|' + str(matrix[area[0],y,t])
-                for x in xrange(area[0] + 1, area[2] + 1):
-                    if matrix[x,y,t] == matrix[x-1,y,t]:
-                        count = count + 1
-                    else:
-                        cluster += '*' + str(count) + ',' + str(matrix[x,y,t])
-                        count = 1
-                cluster += '*' + str(count)
-
-        return hashlib.sha224(cluster).hexdigest()
 
 
     def isFeasibile(r,area):
@@ -327,14 +305,9 @@ def solve(problem, fpgaData, relocation, fixedRegions):
                                 c+=lengths[t,y1]
 
                             areasBCost[a] = c
-
+                            print len(areas)
                             #computes perimeter cost
                             areasPCost[a] = (x2-x1+1) + (y2-y1+1)
-
-                            #computes wirelength cost
-                            areasCXCost[a] = fpga['tileW']*(x1 + x2 + 1)/2.0
-                            areasCYCost[a] = fpga['tileH']*(y1 + y2 + 1)/2.0
-                            areasMinCCost[a] = min((x2-x1+1)*fpga['tileW']/2.0, (y2-y1+1)*fpga['tileH']/2.0)
 
                             #computes io cost
                             areasIOCost[a] = 0
@@ -360,41 +333,6 @@ def solve(problem, fpgaData, relocation, fixedRegions):
         hcur = max(a1[4],a2[4]) - min(a1[2],a2[2])
         return wcur <= wtot and hcur <= htot
 
-
-    if not relocation and USE_2REG_WL_CUT:
-
-        for c in problem['communications']:
-            r1 = c[0]
-            r2 = c[1]
-            print str(r1) + " " + str(r2)
-            minWLComm[c] = {}
-            minWLCommX[c] = {}
-            minWLCommY[c] = {}
-            for a1 in areas.select(r1,'*','*','*','*'):
-                minWLComm[c][a1] = fpga['tileW']*fpga['maxX'] + fpga['tileH']*fpga['maxY']
-                minWLCommX[c][a1] = fpga['tileW']*fpga['maxX']
-                minWLCommY[c][a1] = fpga['tileH']*fpga['maxY']
-                for a2 in areas.select(r2,'*','*','*','*'):
-                    if not overlapping(a1,a2):
-                        minWLComm[c][a1] = min(minWLComm[c][a1], abs(areasCXCost[a1] - areasCXCost[a2]) + abs(areasCYCost[a1] - areasCYCost[a2]))
-                        minWLCommX[c][a1] = min(minWLCommX[c][a1], abs(areasCXCost[a1] - areasCXCost[a2]))
-                        minWLCommY[c][a1] = min(minWLCommX[c][a1], abs(areasCYCost[a1] - areasCYCost[a2]))
-
-            r1 = c[1]
-            r2 = c[0]
-            print str(r1) + " " + str(r2)
-            minWLComm2[c] = {}
-            minWLCommX2[c] = {}
-            minWLCommY2[c] = {}
-            for a1 in areas.select(r1,'*','*','*','*'):
-                minWLComm2[c][a1] = fpga['tileW']*fpga['maxX'] + fpga['tileH']*fpga['maxY']
-                minWLCommX2[c][a1] = fpga['tileW']*fpga['maxX']
-                minWLCommY2[c][a1] = fpga['tileH']*fpga['maxY']
-                for a2 in areas.select(r2,'*','*','*','*'):
-                    if not overlapping(a1,a2):
-                        minWLComm2[c][a1] = min(minWLComm2[c][a1], abs(areasCXCost[a1] - areasCXCost[a2]) + abs(areasCYCost[a1] - areasCYCost[a2]))
-                        minWLCommX2[c][a1] = min(minWLCommX2[c][a1], abs(areasCXCost[a1] - areasCXCost[a2]))
-                        minWLCommY2[c][a1] = min(minWLCommX2[c][a1], abs(areasCYCost[a1] - areasCYCost[a2]))
 
 
 
@@ -431,11 +369,6 @@ def solve(problem, fpgaData, relocation, fixedRegions):
         centroidXVars[r] = m.addVar(0.0,GRB.INFINITY,0.0,GRB.CONTINUOUS, 'centroid_x_' + str(r))
         centroidYVars[r] = m.addVar(0.0,GRB.INFINITY,0.0,GRB.CONTINUOUS, 'centroid_y_' + str(r))
 
-    for c in problem['communications']:
-        commXVars[c] = m.addVar(0.0,GRB.INFINITY,0.0,GRB.CONTINUOUS, 'comm_x_' + str(c))
-        commYVars[c] = m.addVar(0.0,GRB.INFINITY,0.0,GRB.CONTINUOUS, 'comm_y_' + str(c))
-
-    CCost = m.addVar(0.0, GRB.INFINITY, float(problem['obj_weights']['WL'])/WLmax, GRB.CONTINUOUS, 'CCost')
     IOCost = m.addVar(0.0, GRB.INFINITY, float(problem['obj_weights']['WL'])/WLmax, GRB.CONTINUOUS, 'IOCost')
     RCost = m.addVar(0.0, GRB.INFINITY, float(problem['obj_weights']['R'])/Rmax, GRB.CONTINUOUS, 'RCost')
     PCost = m.addVar(0.0, GRB.INFINITY, float(problem['obj_weights']['P'])/Pmax, GRB.CONTINUOUS, 'PCost')
@@ -487,8 +420,6 @@ def solve(problem, fpgaData, relocation, fixedRegions):
     m.addConstr(quicksum(areaVars[a]*areasBCost[a] for a in areas) == BCost, 'BCost_def')
     m.addConstr(quicksum(ANDORandAreaVars[a] * areasBCost[a] for a in areas) == ANDORCost, 'ANDORCost_def')
 
-    #m.addConstr(quicksum(colVar[x] for x in xrange(0, fpga['maxX']))*(1) == BCost,'BCOST_Def')
-    #m.addConstr(quicksum((colVar[x] and ANDORVar) for x in xrange(0, fpga['maxX']) )==ANDORCost,'ANDORCOst_def')
 
     # wasted resources computation
     m.addConstr(quicksum(areaVars[a]*areasRCost[a] for a in areas) == RCost, 'RCost_def')
@@ -496,47 +427,6 @@ def solve(problem, fpgaData, relocation, fixedRegions):
     # perimeter computation
     m.addConstr(quicksum(areaVars[a]*areasPCost[a] for a in areas) == PCost, 'PCost_def')
 
-    # centroid computation
-    for r in problem['regions']:
-        m.addConstr(quicksum(areaVars[a]*areasCXCost[a] for a in areas.select(r,'*','*','*','*')) == centroidXVars[r], 'centroid_x_def_'+str(r))
-        m.addConstr(quicksum(areaVars[a]*areasCYCost[a] for a in areas.select(r,'*','*','*','*')) == centroidYVars[r], 'centroid_y_def_'+str(r))
-
-    # communication bound
-    for c in problem['communications']:
-        m.addConstr(centroidXVars[c[0]] - centroidXVars[c[1]]  <= commXVars[c], 'comm_x_bound_1_' + str(c))
-        m.addConstr(centroidXVars[c[1]] - centroidXVars[c[0]]  <= commXVars[c], 'comm_x_bound_2_' + str(c))
-        m.addConstr(centroidYVars[c[0]] - centroidYVars[c[1]]  <= commYVars[c], 'comm_y_bound_1_' + str(c))
-        m.addConstr(centroidYVars[c[1]] - centroidYVars[c[0]]  <= commYVars[c], 'comm_y_bound_2_' + str(c))
-
-    # communication cuts
-    for c in problem['communications']:
-
-
-        m.addConstr(commXVars[c] + commYVars[c] >=
-                    quicksum(areaVars[a]*areasMinCCost[a] for a in areas.select(c[1],'*','*','*','*')) +
-                    quicksum(areaVars[a]*areasMinCCost[a] for a in areas.select(c[0],'*','*','*','*')), 'comm_region_cut_' + str(c))
-
-        if USE_2REG_WL_CUT:
-
-
-            m.addConstr(commXVars[c] + commYVars[c] >=
-                        quicksum(areaVars[a]*minWLComm[c][a] for a in minWLComm[c]), 'comm_pair_cut_' + str(c))
-            m.addConstr(commXVars[c] + commYVars[c] >=
-                        quicksum(areaVars[a]*minWLComm2[c][a] for a in minWLComm2[c]), 'comm_pair_cut_2_' + str(c))
-
-            m.addConstr(commXVars[c] >=
-                        quicksum(areaVars[a]*minWLCommX[c][a] for a in minWLCommX[c]), 'comm_pair_cut_x_' + str(c))
-            m.addConstr(commXVars[c] >=
-                        quicksum(areaVars[a]*minWLCommX2[c][a] for a in minWLCommX2[c]), 'comm_pair_cut_x_2_' + str(c))
-
-            m.addConstr(commYVars[c] >=
-                        quicksum(areaVars[a]*minWLCommY[c][a] for a in minWLCommY[c]), 'comm_pair_cut_y_' + str(c))
-            m.addConstr(commYVars[c] >=
-                        quicksum(areaVars[a]*minWLCommY2[c][a] for a in minWLCommY2[c]), 'comm_pair_cut_y_2_' + str(c))
-
-    # wirelength computation
-    if(len(problem['communications']) > 0):
-        m.addConstr(quicksum((commXVars[c]+commYVars[c])*problem['communications'][c] for c in problem['communications']) == CCost, 'CCost_def')
 
     # io computation
     m.addConstr(quicksum(areaVars[a]*areasIOCost[a] for a in areas) == IOCost, 'IOCost_def')
@@ -569,7 +459,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
         if not relocation:
             result['metrics'] = {
             'absolute' : {
-            'wirelength' : CCost.getAttr('X') + IOCost.getAttr('X'),
+            'wirelength' : IOCost.getAttr('X'),
             'perimeter' : PCost.getAttr('X'),
             'resources' : RCost.getAttr('X'),
             'ANDORCost' :  ANDORCost.getAttr('X'),
@@ -578,7 +468,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
             'BMAX' : BMax
             },
             'relative' : {
-            'wirelength' : (CCost.getAttr('X') + IOCost.getAttr('X')) / WLmax ,
+            'wirelength' : ( IOCost.getAttr('X')) / WLmax ,
             'perimeter' : PCost.getAttr('X') / Pmax,
             'resources' : RCost.getAttr('X') / Rmax,
             'Bitstream' : (BCost.getAttr('X')+ ANDORCost.getAttr('X'))/ BMax,
@@ -620,3 +510,4 @@ def solve(problem, fpgaData, relocation, fixedRegions):
         print('#### infeasible ####')
 
     return result
+

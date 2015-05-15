@@ -229,8 +229,10 @@ def minLen(listOfBlocks):
     return min
 
 
+
 def shrinkWidth(fpga,maxW):
     res=range(fpga.height)
+    maxH=fpga.height
 
     for i in range(fpga.height):
         res[i]=[]
@@ -239,12 +241,19 @@ def shrinkWidth(fpga,maxW):
         while c<fpga.width:
             same=0
             union=[fpga.blocks[r][c]]
-            for k in range(1,maxW):
-                if (c+k)<fpga.width and (fpga.blocks[r][c+k].t==fpga.blocks[r][c].t):
+            k=1
+            diff = False
+            while k<maxW and c+k<fpga.width and not diff:
+                z=0
+                while z<maxH and not diff:
+                    if (fpga.blocks[z][c].t!=fpga.blocks[z][c+k].t):
+                        diff=True
+                    z+=1
+                if not diff:
                     same=k
-                    union.append(fpga.blocks[r][c+k])
-                else:
-                    break
+                    k+=1
+
+
 
             if same!=0:
                 new = block(len(res[r]),r,fpga.blocks[r][c].t)
