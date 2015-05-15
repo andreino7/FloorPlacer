@@ -48,7 +48,6 @@ function colour(type) {
 }
 
 function ObjectiveFunction() {
-    this.wirelength = 0;
     this.perimeter = 0;
     this.wastedResources = 0;
     this.bitstream = 0;
@@ -57,9 +56,7 @@ function ObjectiveFunction() {
     this.precision = 0;
 }
 
-ObjectiveFunction.prototype.updateWire = function (newValue) {
-    this.wirelength = newValue;
-};
+
 
 ObjectiveFunction.prototype.updatePerimeter = function (newValue) {
     this.perimeter = newValue;
@@ -819,17 +816,6 @@ $(document).ready(function () {
     });
 
 
-    $(function () {
-        $("#sliderWL").slider({
-            orientation: 'vertical',
-            slide: function (evente, ui) {
-                $("#qWL").val(ui.value);
-                objectiveFunction.updateWire(ui.value);
-            }
-
-        });
-    });
-
 
 
 
@@ -908,7 +894,6 @@ function optimize() {
     toOpt.precision = objectiveFunction.precision;
 
     toOpt.obj_weights = {};
-    toOpt.obj_weights.wirelength = objectiveFunction.wirelength;
     toOpt.obj_weights.perimeter = objectiveFunction.perimeter;
     toOpt.obj_weights.resources = objectiveFunction.bitstream;
     toOpt.obj_weights.bitstream = objectiveFunction.wastedResources;
