@@ -52,7 +52,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
 
 
     #parse the problem data
-    problem['obj_weights']['WL'] = problem['obj_weights']['wirelength']
+    #problem['obj_weights']['WL'] = problem['obj_weights']['wirelength']
     problem['obj_weights']['P'] = problem['obj_weights']['perimeter']
     problem['obj_weights']['R'] = problem['obj_weights']['resources']
     problem['obj_weights']['B'] = problem['obj_weights']['bitstream']
@@ -143,15 +143,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
     # max perimeter
     Pmax = len(problem['regions'])*(fpga['maxY']*fpga['tileH'] + fpga['maxX']*fpga['tileW'])*2
 
-    #max WL
-    WLmax=0
-
-    for r in problem['io']:
-        WLmax += sum(io[2] for io in problem['io'][r])
-
-    WLmax = WLmax*(fpga['tileW']*fpga['maxX'] + fpga['tileH']*fpga['maxY'])
-    if(WLmax == 0):
-        WLmax = 1
+   
 
     c=0
 
@@ -309,12 +301,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
                             #computes perimeter cost
                             areasPCost[a] = (x2-x1+1) + (y2-y1+1)
 
-                            #computes io cost
-                            areasIOCost[a] = 0
-                            if(r in problem['io']):
-                                for io in problem['io'][r]:
-                                    areasIOCost[a] += (abs(areasCXCost[a] - io[0]*fpga['tileW']) + abs(areasCYCost[a] - io[1]*fpga['tileH']))*io[2]
-                            break
+                           
 
 
 
@@ -369,7 +356,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
         centroidXVars[r] = m.addVar(0.0,GRB.INFINITY,0.0,GRB.CONTINUOUS, 'centroid_x_' + str(r))
         centroidYVars[r] = m.addVar(0.0,GRB.INFINITY,0.0,GRB.CONTINUOUS, 'centroid_y_' + str(r))
 
-    IOCost = m.addVar(0.0, GRB.INFINITY, float(problem['obj_weights']['WL'])/WLmax, GRB.CONTINUOUS, 'IOCost')
+    #IOCost = m.addVar(0.0, GRB.INFINITY, float(problem['obj_weights']['WL'])/WLmax, GRB.CONTINUOUS, 'IOCost')
     RCost = m.addVar(0.0, GRB.INFINITY, float(problem['obj_weights']['R'])/Rmax, GRB.CONTINUOUS, 'RCost')
     PCost = m.addVar(0.0, GRB.INFINITY, float(problem['obj_weights']['P'])/Pmax, GRB.CONTINUOUS, 'PCost')
     ANDORVar = m.addVar(0.0,1.0,0.0,GRB.BINARY, "ANDOR Usage")
@@ -429,7 +416,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
 
 
     # io computation
-    m.addConstr(quicksum(areaVars[a]*areasIOCost[a] for a in areas) == IOCost, 'IOCost_def')
+    #m.addConstr(quicksum(areaVars[a]*areasIOCost[a] for a in areas) == IOCost, 'IOCost_def')
 
 
     m.modelSense = GRB.MINIMIZE
@@ -459,7 +446,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
         if not relocation:
             result['metrics'] = {
             'absolute' : {
-            'wirelength' : IOCost.getAttr('X'),
+            #'wirelength' : IOCost.getAttr('X'),
             'perimeter' : PCost.getAttr('X'),
             'resources' : RCost.getAttr('X'),
             'ANDORCost' :  ANDORCost.getAttr('X'),
@@ -468,7 +455,7 @@ def solve(problem, fpgaData, relocation, fixedRegions):
             'BMAX' : BMax
             },
             'relative' : {
-            'wirelength' : ( IOCost.getAttr('X')) / WLmax ,
+            #'wirelength' : ( IOCost.getAttr('X')) / WLmax ,
             'perimeter' : PCost.getAttr('X') / Pmax,
             'resources' : RCost.getAttr('X') / Rmax,
             'Bitstream' : (BCost.getAttr('X')+ ANDORCost.getAttr('X'))/ BMax,
