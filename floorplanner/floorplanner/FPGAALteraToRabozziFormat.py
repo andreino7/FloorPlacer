@@ -12,7 +12,7 @@ def decodeFPGAAltera(name,prec):
 
 
     #fpga.blocks = f.rearrange(fpga,fpga.blocks)
-    f.shrink(fpga,prec)
+    f.shrinkHeight(fpga,prec)
     f.shrinkWidth(fpga,3)
 
     res={}
@@ -44,7 +44,7 @@ def solutionToReal(name,solution,prec):
     real={}
     real = copy.deepcopy(solution)
     fpga = enc.decodeFromPortionsFile('floorplanner/floorplanner/'+name+'_Port.json')
-    f.shrink(fpga,prec)
+    f.shrinkHeight(fpga,prec)
     f.shrinkWidth(fpga,3)
 
     for r in real['regions'].keys():

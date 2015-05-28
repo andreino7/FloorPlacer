@@ -1,7 +1,7 @@
 """
 @author Marco Rabozzi [marco.rabozzi@mail.polimi.it]
 """
-PRECISIONS=[10,15,30]
+PRECISIONS=[10,5,3]
 
 
 with open('floorplanner/floorplanner/problem.json') as f:

@@ -327,6 +327,7 @@ def solve(prob, fpgaData, relocation, fixedRegions):
 
 
     print("Time spent generating areas: ", time.time() - startRec)
+    startRec= time.time()
 
     for a in areas:
         # insert the area as a possible solution for the region
@@ -370,7 +371,7 @@ def solve(prob, fpgaData, relocation, fixedRegions):
             # no valid solution can exists
             return result
 
-
+    print("Time spent Union areas: ", time.time() - startRec)
     def overlapping(a1,a2):
         wtot = a1[3] + a2[3] - a1[1] - a2[1]
         htot = a1[4] + a2[4] - a1[2] - a2[2]
