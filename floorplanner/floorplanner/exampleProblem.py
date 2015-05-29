@@ -10,7 +10,7 @@ with open('floorplanner/floorplanner/problem.json') as f:
 print problem
 
 import FPGAALteraToRabozziFormat as decode
-import floorplanner
+import multiThreadFloorplanner as floorplanner
 
 if 'precision' in problem.keys():
 	prec = int(problem['precision'])
