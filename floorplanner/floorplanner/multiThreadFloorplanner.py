@@ -369,7 +369,7 @@ def solve(prob, fpgaData, relocation, fixedRegions):
     for r in problem['regions']:
         if numAreasForRegion[r] == 0:
             # no valid solution can exists
-            return result
+            return "Unfeasible"
 
     print("Time spent Union areas: ", time.time() - startRec)
     def overlapping(a1,a2):
@@ -554,5 +554,6 @@ def solve(prob, fpgaData, relocation, fixedRegions):
 
     else:
         print('#### infeasible ####')
+        return "Unfeasible"
 
     return result

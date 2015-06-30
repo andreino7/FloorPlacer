@@ -1,7 +1,7 @@
 """
 @author Marco Rabozzi [marco.rabozzi@mail.polimi.it]
 """
-PRECISIONS=[10,5,3]
+PRECISIONS=[21,13,9]
 
 
 with open('floorplanner/floorplanner/problem.json') as f:
@@ -10,7 +10,7 @@ with open('floorplanner/floorplanner/problem.json') as f:
 print problem
 
 import FPGAALteraToRabozziFormat as decode
-import floorplanner
+import multiThreadFloorplanner as floorplanner
 
 if 'precision' in problem.keys():
 	prec = int(problem['precision'])
@@ -19,8 +19,8 @@ else:
 
 fpga=decode.decodeFPGAAltera(problem['fpga'],PRECISIONS[prec])
 res= floorplanner.solve(problem, fpga, False, None)
-
-res = decode.solutionToReal(problem['fpga'],res,PRECISIONS[prec])
+if not res == "Unfeasible":
+    res = decode.solutionToReal(problem['fpga'],res,PRECISIONS[prec])
 print res
 import json
 
