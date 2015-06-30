@@ -746,7 +746,6 @@ function updateCounter(region, rscType) {
 
 function init(result) {
 
-    objectiveFunction = new ObjectiveFunction();
     var mydata = JSON.parse(result);
     var xmax = 0;
     var ymax = 0;
@@ -776,6 +775,7 @@ function init(result) {
 }
 
 function init2(result) {
+    objectiveFunction = new ObjectiveFunction();
     init(result);
     addRegion();
 }
@@ -792,7 +792,9 @@ function initCanvas() {
 function zoomin(param) {
     if (scaleFactor*param <= MAXZOOM && scaleFactor*param >= MINZOOM) {
       scaleFactor = scaleFactor*param;
+      alert(param);
       var tmpShape = s.shapes;
+      var tmpObj = s.objectiveFunction
       for (i=0; i < s.shapes.length; i++) {
         s.shapes[i].x = s.shapes[i].x * param
         s.shapes[i].y = s.shapes[i].y * param
