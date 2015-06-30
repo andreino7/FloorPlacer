@@ -648,7 +648,7 @@ function updateView() {
 
 
     for (var i = 0; i < resourcesType.length; i++)
-        htmlFields += '<td>' + resourcesType[i] + ' <input onkeyup="updateValues();" onClick="justClick(this)" maxlength="4" onkeypress="return checkKey(event);" type="text" value="0" id="' + s.shapes.length + '_' + resourcesType[i] + '"></td>';
+        htmlFields += '<td>' + resourcesType[i] + ' <input onkeyup="updateValues();" onClick="justClick(this)" maxlength="5" onkeypress="return checkKey(event);" type="text" value="0" id="' + s.shapes.length + '_' + resourcesType[i] + '"></td>';
 
     htmlFields += '</tr><tr><td>Covered:</td>';
 
@@ -709,8 +709,6 @@ function updateValues() {
         } else {
             s.shapes[i].requiredMK20 = 0;
         }
-        s.shapes[i].requiredMK20 = $(id3).val();
-
     }
 }
 
@@ -924,7 +922,8 @@ function optimize() {
             alert("The required design is unfeasible");
             s.shapes = [];
             var shape = new Shape(s, 4, 4, 22, 37, 'rgba(150,150,250,0.7)', s.shapes.length + 1);
-            s.addShape(shape);                
+            s.addShape(shape);
+            updateCoverage(shape);
         } else {
             var myData = JSON.parse(result);
             for (var i = 0; i < s.shapes.length; i++) {
