@@ -775,6 +775,11 @@ function init(result) {
 
 }
 
+function init2(result) {
+    init(result);
+    addRegion();
+}
+
 
 
 function initCanvas() {
@@ -816,7 +821,7 @@ function ajaxmagic() {
         success: function (result) {
             $("#regionInfo").empty();
             fpga = result;
-            init(result);
+            init2(result);
         }});
 }
 
