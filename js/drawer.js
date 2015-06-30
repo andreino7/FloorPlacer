@@ -954,10 +954,10 @@ function optimize() {
                 s.shapes[i].row = y1;    
                 s.shapes[i].width = Math.abs(x2 - x1) + 1;
                 s.shapes[i].height = Math.abs(y2 - y1) + 1;
-                s.shapes[i].x = x1 * MOVING_CONSTANTX + 4;
-                s.shapes[i].y = y1 * MOVING_CONSTANTY + 4;
-                s.shapes[i].h = MOVING_CONSTANTY * s.shapes[i].height;
-                s.shapes[i].w = MOVING_CONSTANTX * s.shapes[i].width;
+                s.shapes[i].x = (x1 * MOVING_CONSTANTX + 4)*scaleFactor;
+                s.shapes[i].y = (y1 * MOVING_CONSTANTY + 4)*scaleFactor;
+                s.shapes[i].h = (MOVING_CONSTANTY * s.shapes[i].height)*scaleFactor;
+                s.shapes[i].w = (MOVING_CONSTANTX * s.shapes[i].width)*scaleFactor;
                 updateCoverage(s.shapes[i]);
                 //alert(myData.time);
                 //
