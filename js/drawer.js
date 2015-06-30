@@ -530,6 +530,11 @@ CanvasState.prototype.addShape = function (shape) {
     this.valid = false;
 };
 
+CanvasState.prototype.removeShape = function (shape) {
+    this.shapes.pop(shape);
+    this.valid = false;
+};
+
 CanvasState.prototype.addResource = function (resource) {
     this.resources.push(resource);
     //this.valid = false;
@@ -874,6 +879,7 @@ function selectPrecision() {
 function optimize() {
 
     $('#overlay').css('display', 'block');
+    s.clear();
     var menu = document.getElementById("fpgaSelection");
     var toOpt = {};
     toOpt.fpga = menu.options[menu.selectedIndex].value;
@@ -913,6 +919,13 @@ function optimize() {
         url: "optimizationScript.php",
         data: "optimize=" + json,
         success: function (result) {
+        $('#overlay').css('display', 'none');
+        if (result=='"Unfeasible"') {
+            alert("The required design is unfeasible");
+            s.shapes = [];
+            var shape = new Shape(s, 4, 4, 22, 37, 'rgba(150,150,250,0.7)', s.shapes.length + 1);
+            s.addShape(shape);                
+        } else {
             var myData = JSON.parse(result);
             for (var i = 0; i < s.shapes.length; i++) {
                 var x1 = myData.regions["rec" + s.shapes[i].id].x1;
@@ -920,7 +933,7 @@ function optimize() {
                 var x2 = myData.regions["rec" + s.shapes[i].id].x2;
                 var y2 = myData.regions["rec" + s.shapes[i].id].y2;
                 s.shapes[i].column = x1;
-                s.shapes[i].row = y1;
+                s.shapes[i].row = y1;    
                 s.shapes[i].width = Math.abs(x2 - x1) + 1;
                 s.shapes[i].height = Math.abs(y2 - y1) + 1;
                 s.shapes[i].x = x1 * MOVING_CONSTANTX + 4;
@@ -928,11 +941,11 @@ function optimize() {
                 s.shapes[i].h = MOVING_CONSTANTY * s.shapes[i].height;
                 s.shapes[i].w = MOVING_CONSTANTX * s.shapes[i].width;
                 updateCoverage(s.shapes[i]);
-                alert(myData.time);
-            }
-            $('#overlay').css('display', 'none');
-            s.valid = false;
-            s.draw();
+                //alert(myData.time);
+        }
+    }
+        s.valid = false;
+        s.draw();
         }});
 }
 
