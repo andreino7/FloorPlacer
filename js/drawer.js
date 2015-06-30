@@ -792,7 +792,6 @@ function initCanvas() {
 function zoomin(param) {
     if (scaleFactor*param <= MAXZOOM && scaleFactor*param >= MINZOOM) {
       scaleFactor = scaleFactor*param;
-      alert(param);
       var tmpShape = s.shapes;
       var tmpObj = s.objectiveFunction
       for (i=0; i < s.shapes.length; i++) {
