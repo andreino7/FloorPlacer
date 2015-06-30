@@ -942,6 +942,7 @@ function optimize() {
                 s.shapes[i].w = MOVING_CONSTANTX * s.shapes[i].width;
                 updateCoverage(s.shapes[i]);
                 //alert(myData.time);
+                //
         }
     }
         s.valid = false;
